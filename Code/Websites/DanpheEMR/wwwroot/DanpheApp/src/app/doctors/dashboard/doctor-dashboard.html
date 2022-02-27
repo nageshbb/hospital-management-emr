@@ -157,3 +157,8 @@
     </form>
   </div>
 </div>
+
+<OPD-Examination *ngIf="showExamination"
+                                [OPD-Examination]="opdExamination"
+                                (callback-examination)="CallBackExamination($event)">
+  </OPD-Examination>

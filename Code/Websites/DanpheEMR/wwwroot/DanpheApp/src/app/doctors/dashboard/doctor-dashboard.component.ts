@@ -26,6 +26,7 @@ import { GridEmitModel } from "../../shared/danphe-grid/grid-emit.model";
 import { SecurityService } from '../../security/shared/security.service';
 import { DanpheCache, MasterType } from '../../shared/danphe-cache-service-utility/cache-services';
 import { Employee } from '../../employee/shared/employee.model';
+import { OPDExaminationModel } from '../../clinical-notes/shared/OPD-Examination.model';
 @Component({
   templateUrl: "./doctor-dashboard.html" // "/DoctorsView/DoctorDashboard"
 })
@@ -65,6 +66,8 @@ export class DoctorDashboardComponent implements OnDestroy {
   public patientVisitType: string = "all";
   private appointmentList: any;
   public  Timer: any = null;
+  public showExamination :boolean = false;
+  public opdExamination: OPDExaminationModel = new OPDExaminationModel();
   constructor(
     _patientService: PatientService,
     _visitServ: VisitService,
@@ -316,11 +319,24 @@ export class DoctorDashboardComponent implements OnDestroy {
 
         }
         break;
+        case "Examination":
+        {
+          this.Examination($event.Data);
+         //this.showExamination= true;
+        }
+        break;
       default:
         break;
     }
   }
-
+  Examination(selectedVisit: Visit) {
+     this.SelectVisit(selectedVisit);
+     this.showExamination = true;
+  }
+  CallBackExamination($event){
+    this.showExamination = false;
+    
+  }
   loadDocDeptVisitList() {
     for (var i in this.DateValidator.controls) {
       this.DateValidator.controls[i].markAsDirty();

@@ -28,6 +28,7 @@ import { ViewHistoryAndPhysicalNoteComponent } from './templates/history-and-phy
 import { ViewEmergencyNoteComponent } from './templates/emergency-note/view-emergency-note.component';
 import { ClinicalPrescriptionNoteComponent } from './prescription-note/clinical-prescription-note.component';
 import { ViewClinicalPrescriptionNoteComponent } from './prescription-note/view-clinical-prescription-note.component';
+import { OPDExaminationComponent } from './OPDExamination/OPD-Examination.component';
 
 
 @NgModule({
@@ -65,7 +66,8 @@ import { ViewClinicalPrescriptionNoteComponent } from './prescription-note/view-
     ViewHistoryAndPhysicalNoteComponent,
     ViewEmergencyNoteComponent,
     ClinicalPrescriptionNoteComponent,
-    ViewClinicalPrescriptionNoteComponent
+    ViewClinicalPrescriptionNoteComponent,
+    OPDExaminationComponent
   ]
 })
 

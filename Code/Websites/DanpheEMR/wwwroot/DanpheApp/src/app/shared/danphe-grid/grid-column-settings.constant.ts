@@ -3021,7 +3021,8 @@ return template;
              <a danphe-grid-action="notes" class="d-icon icon-note hidden" title="Notes""></a>
              <a danphe-grid-action="medication" class="d-icon icon-medication hidden" title="Medication""></a>
              <a danphe-grid-action="labs" class="d-icon icon-lab" title="Labs""></a>
-             <a danphe-grid-action="imaging" class="d-icon icon-imaging" title="Imaging""></a>`,
+             <a danphe-grid-action="imaging" class="d-icon icon-imaging" title="Imaging""></a>
+             <a danphe-grid-action="Examination" class="d-icon icon-examination" title="Examination""></a>`,
     },
   ];
   //View Clinical-notes Template

@@ -3661,7 +3661,8 @@ namespace DanpheEMR.Controllers
                                 srvDepartment = (from billItem in billingDbContext.BillItemPrice
                                                  join srvDept in billingDbContext.ServiceDepartment on billItem.ServiceDepartmentId equals srvDept.ServiceDepartmentId
                                                  join dept in billingDbContext.Departments on srvDept.DepartmentId equals dept.DepartmentId
-                                                 where (dept.DepartmentName.ToLower() == req.DepartmentName.ToLower()
+                                                 join sd in billingDbContext.IntegrationName on srvDept.IntegrationName.ToLower() equals sd.IntegrationName.ToLower()
+                                                 where (sd.IntegrationName.ToLower() == req.DepartmentName.ToLower()
                                                  && billItem.ItemName.ToLower() == req.ItemName.ToLower())
                                                  select srvDept).FirstOrDefault();
                             }
