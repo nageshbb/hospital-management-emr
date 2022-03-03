@@ -65,6 +65,7 @@ export class DoctorDashboardComponent implements OnDestroy {
   public patientVisitType: string = "all";
   private appointmentList: any;
   public  Timer: any = null;
+  public showExamination :boolean = false;
   constructor(
     _patientService: PatientService,
     _visitServ: VisitService,
@@ -316,11 +317,24 @@ export class DoctorDashboardComponent implements OnDestroy {
 
         }
         break;
+        case "Examination":
+        {
+          this.Examination($event.Data);
+         //this.showExamination= true;
+        }
+        break;
       default:
         break;
     }
   }
-
+  Examination(selectedVisit: Visit) {
+     this.SelectVisit(selectedVisit);
+     this.showExamination = true;
+  }
+  CallBackExamination($event){
+    this.showExamination = false;
+    
+  }
   loadDocDeptVisitList() {
     for (var i in this.DateValidator.controls) {
       this.DateValidator.controls[i].markAsDirty();

@@ -59,6 +59,13 @@ export class NoteTemplateBLService {
     return this.clinicalDLService.PostHistoryAndPhysicalNoteTemplate(temp)
       .map(res => res);
   }
+  public PostOpdExamination(NoteMaster: NotesModel) {
+    var temp = _.omit(NoteMaster, ['DischargeSummaryNote', 'EmergencyNote', 'ProgressiveNote']);
+    var newtemp = _.omit(temp.SubjectiveNote, ['SubjectiveNoteValidator']);
+    temp.SubjectiveNote = newtemp;
+    return this.clinicalDLService.PostOpdExamination(temp)
+      .map(res => res);
+  }
 
   public PostEmergencyNoteTemplate(NoteMaster: NotesModel) {
     var temp = _.omit(NoteMaster, ['DischargeSummaryNote', 'FreeTextNote', 'ProcedureNote', 'ProgressiveNote', 'ClinicalDiagnosis']);
@@ -108,6 +115,10 @@ export class NoteTemplateBLService {
   }
   public GetHistoryAndPhysicalNoteById(NotesId) {
     return this.clinicalDLService.GetHistoryAndPhysicalNoteById(NotesId)
+      .map(res => res);
+  }
+  public GetOpdExaminationdetailsById(patientId,PatientVisitid) {
+    return this.clinicalDLService.GetOpdExaminationdetailsById(patientId,PatientVisitid)
       .map(res => res);
   }
   public GetEmergencyNoteById(NotesId) {
