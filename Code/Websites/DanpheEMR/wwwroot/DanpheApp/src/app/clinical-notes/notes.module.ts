@@ -29,12 +29,15 @@ import { ViewEmergencyNoteComponent } from './templates/emergency-note/view-emer
 import { ClinicalPrescriptionNoteComponent } from './prescription-note/clinical-prescription-note.component';
 import { ViewClinicalPrescriptionNoteComponent } from './prescription-note/view-clinical-prescription-note.component';
 import { OPDExaminationComponent } from './OPDExamination/OPD-Examination.component';
+import { MedicationBLService } from '../clinical/shared/medication.bl.service';
+import { OpdexaminationViewComponent } from './OPDExamination/opd-examination-view.component';
 
 
 @NgModule({
   providers: [
 
-    NoteTemplateBLService
+    NoteTemplateBLService,
+    MedicationBLService,
   ],
   imports: [
     CommonModule,
@@ -67,7 +70,8 @@ import { OPDExaminationComponent } from './OPDExamination/OPD-Examination.compon
     ViewEmergencyNoteComponent,
     ClinicalPrescriptionNoteComponent,
     ViewClinicalPrescriptionNoteComponent,
-    OPDExaminationComponent
+    OPDExaminationComponent,
+    OpdexaminationViewComponent
   ]
 })
 
