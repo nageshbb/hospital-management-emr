@@ -1011,18 +1011,6 @@ namespace DanpheEMR.Controllers.Clinical
                 }
                 else if (reqType == "getopdExaminationById")
                 {
-                    var opdExamination_NoteTypeId = (from noteType in dbContext.NoteType
-                                                     where noteType.NoteType.ToLower() == ("OPD Examination").ToLower()
-                                                     select noteType.NoteTypeId
-                                                     ).FirstOrDefault();
-
-                    var notes_Id = (from note in dbContext.Notes
-
-                                    where note.PatientId == patientId && note.PatientVisitId == patientVisitId && note.NoteTypeId == opdExamination_NoteTypeId
-                                    select note.NotesId).FirstOrDefault();
-                                    
-                        
-
                     var opdEx_Note = (from note in dbContext.Notes
                                   join sNote in dbContext.SubjectiveNotes on note.NotesId equals sNote.NotesId into tempSubNote
                                   from subjNote in tempSubNote.DefaultIfEmpty()
@@ -1043,7 +1031,7 @@ namespace DanpheEMR.Controllers.Clinical
 
                                   join prescription in dbContext.ClinicalPrescriptionNote on note.NotesId equals prescription.NotesId into tempPre
                                   from pre in tempPre.ToList()
-                                  where note.NotesId == notes_Id
+                                  where note.NotesId == notesId
                                   select new
                                   {
                                       note.PatientId,
@@ -1064,7 +1052,7 @@ namespace DanpheEMR.Controllers.Clinical
                                       ObjectiveNote = objNote,
                                       Prescription = pre,
                                       DiagnosisOrdersList = (from allDiagnosis in dbContext.ClinicalDiagnosis
-                                                             where allDiagnosis.NotesId == NotesId && allDiagnosis.IsActive == true
+                                                             where allDiagnosis.NotesId == notesId && allDiagnosis.IsActive == true
                                                              select new
                                                              {
                                                                  allDiagnosis.DiagnosisId,

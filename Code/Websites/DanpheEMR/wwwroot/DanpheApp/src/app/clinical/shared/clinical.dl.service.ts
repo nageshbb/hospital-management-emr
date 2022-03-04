@@ -409,8 +409,8 @@ export class ClinicalDLService {
   public GetHistoryAndPhysicalNoteById(NotesId) {
     return this.http.get<any>("/api/Clinical?reqType=getHistoryAndPhysicalNoteById&NotesId=" + NotesId, this.options);
   }
-  public GetOpdExaminationdetailsById(patientId,patientVisitid) {
-    return this.http.get<any>("/api/Clinical?reqType=getopdExaminationById&patientVisitId=" + patientVisitid + "&patientId=" + patientId, this.options);
+  public GetOpdExaminationdetailsById(patientId,patientVisitid,notesId) {
+    return this.http.get<any>("/api/Clinical?reqType=getopdExaminationById&patientVisitId=" + patientVisitid + "&patientId=" + patientId + "&notesId="+ notesId, this.options);
   }
   public GetEmergencyNoteById(NotesId) {
     return this.http.get<any>("/api/Clinical?reqType=getEmergencyNoteById&NotesId=" + NotesId, this.options);

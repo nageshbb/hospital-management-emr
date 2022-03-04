@@ -3395,12 +3395,15 @@ return template;
       params.data.CreatedBy == params.data.LoggedInEmployeeId &&
       params.data.IsPending == true
     ) {
-      let template = `<a danphe-grid-action="view" class="grid-action" >
-              View
-            </a>
-              <a danphe-grid-action="edit" class="grid-action">
-              Edit
-           </a>`;
+      // let template = `<a danphe-grid-action="view" class="grid-action" >
+      //         View
+      //       </a>
+      //         <a danphe-grid-action="edit" class="grid-action">
+      //         Edit
+      //      </a>`;
+           let template = `<a danphe-grid-action="view" class="grid-action" >
+           View
+         </a>`;
       return template;
     } else {
       let template = `<a danphe-grid-action="view" class="grid-action" >

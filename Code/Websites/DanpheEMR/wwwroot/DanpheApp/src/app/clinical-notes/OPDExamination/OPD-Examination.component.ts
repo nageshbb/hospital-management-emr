@@ -25,6 +25,7 @@ import { DanpheHTTPResponse } from "../../shared/common-models";
 import { OrderItemsVM } from "../../orders/shared/orders-vms";
 import { CommonFunctions } from "../../shared/common.functions";
 import { HttpHeaders, HttpClient } from "@angular/common/http";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "OPD-Examination",
@@ -87,7 +88,7 @@ export class OPDExaminationComponent{
     public notetemplateBLService: NoteTemplateBLService,
     public patientService: PatientService,
     public changeDetector: ChangeDetectorRef,
-    public ordServ: OrderService,
+    public ordServ: OrderService, public router: Router,
     public securityService: SecurityService,
     public http: HttpClient) {
     this.pat = this.patientService.globalPatient;
@@ -281,11 +282,12 @@ SubmitTemplate(value) {
   }
 }
 PostTemplate() {
-  if (this.visitService.globalVisit.ConcludeDate) {
-    this.isVisitConcluded = true;
-    this.msgBoxServ.showMessage("Warning", ["This Visit is concluded"]);
-  } else {
-    this.isVisitConcluded = false;
+  // if (this.visitService.globalVisit.ConcludeDate) {
+  //   this.isVisitConcluded = true;
+  //   this.msgBoxServ.showMessage("Warning", ["This Visit is concluded"]);
+  // } else 
+  // {
+  //   this.isVisitConcluded = false;
   
   this.notes.ClinicalPrescriptionNote.PatientId = this.patVisit.PatientId;
   this.notes.ClinicalPrescriptionNote.PatientVisitId = this.patVisit.PatientVisitId;
@@ -297,6 +299,7 @@ PostTemplate() {
   this.notes.PatientId = this.patVisit.PatientId;
   this.notes.PatientVisitId = this.patVisit.PatientVisitId;
   this.notes.TemplateId = this.templateList.find(temp=>temp.TemplateName == this.NoteType).TemplateId;
+  this.notes.TemplateName=this.templateList.find(temp=>temp.TemplateName == this.NoteType).TemplateName;
     this.notes.NoteTypeId =   this.noteTypeList.find(type => type.NoteType == this.NoteType).NoteTypeId;
   //Logic for Posting History and Physical Note
  
@@ -314,7 +317,7 @@ PostTemplate() {
         this.msgBoxServ.showMessage("Warning", ["Submit can't be done with all fields empty !"]);
       }
     }
-}
+
 }
 MapAllOrdersAndAssign() {
 
@@ -561,7 +564,7 @@ MapAllOrdersAndAssign() {
       .subscribe(res => {
         if (res.Status == "OK") {
           this.msgBoxServ.showMessage("Success", ["OPD Examination done successfully."]);
-         // this.RouteToViewNotes();
+          this.RouteToNotesList();
         }
         else {
           this.msgBoxServ.showMessage("Failed", ["Error in Posting OPD Examination"]);
@@ -569,7 +572,11 @@ MapAllOrdersAndAssign() {
         }
       });
   }
-
+public RouteToNotesList(){
+  this.router.navigate([
+    "/Doctors/PatientOverviewMain/NotesSummary/NotesList",
+  ]);
+}
 public GetNoteTypeList() {
   try {
 

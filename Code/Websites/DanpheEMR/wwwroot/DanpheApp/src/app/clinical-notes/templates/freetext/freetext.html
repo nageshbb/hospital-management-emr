@@ -34,7 +34,7 @@
           <div class="editor-content">
             <div class="row">
               <div class="col-md-12 col-xs-12 col-sm-12" style="min-height:200px;">
-                <danphe-ckeditor *ngIf="showCKeditor"
+                <danphe-ckeditor *ngIf="showCKeditor" panel-height="240px"
                                  [readonly]="false"
                                  (get-html-content)="onChangeEditorData($event)"
                                  [set-html-content]="freeText.FreeText">

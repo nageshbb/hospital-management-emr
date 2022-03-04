@@ -117,8 +117,8 @@ export class NoteTemplateBLService {
     return this.clinicalDLService.GetHistoryAndPhysicalNoteById(NotesId)
       .map(res => res);
   }
-  public GetOpdExaminationdetailsById(patientId,PatientVisitid) {
-    return this.clinicalDLService.GetOpdExaminationdetailsById(patientId,PatientVisitid)
+  public GetOpdExaminationdetailsById(patientId,PatientVisitid,notesId) {
+    return this.clinicalDLService.GetOpdExaminationdetailsById(patientId,PatientVisitid,notesId)
       .map(res => res);
   }
   public GetEmergencyNoteById(NotesId) {

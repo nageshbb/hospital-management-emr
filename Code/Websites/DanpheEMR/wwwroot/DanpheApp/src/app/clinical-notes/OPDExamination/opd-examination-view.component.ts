@@ -26,9 +26,11 @@ export class OpdexaminationViewComponent {
   public headerDetail: { header1, header2, header3, header4, hospitalName; address; email; PANno; tel; DDA };
  public pat :number=0;
  public patVisit:number=0;
-
+ public patientQRCodeInfo:string="";
+ public notesId:number=0;
   @Input("patientVisitId")
   public patientVisitId: number;
+
   @Output("callback-view")
   public CallBackView: EventEmitter<Object> = new EventEmitter<Object>();
   constructor(public noteTemplateBLService: NoteTemplateBLService,
@@ -38,13 +40,14 @@ export class OpdexaminationViewComponent {
     public visitService:VisitService) {
       this.pat = this.patientService.getGlobal().PatientId;
       this.patVisit =  this.visitService.getGlobal().PatientVisitId;
+      this.notesId= this.noteTemplateBLService.NotesId;
       this.GetHeaderParameter();
       this.getOpdExaminationData()
 
   }
 getOpdExaminationData(){
   //if ( > 0) {
-    this.noteTemplateBLService.GetOpdExaminationdetailsById(this.pat,this.patVisit).
+    this.noteTemplateBLService.GetOpdExaminationdetailsById(this.pat,this.patVisit,this.notesId).
       subscribe((res) => {
 
         if (res.Status == "OK" && res.Results) {

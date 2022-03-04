@@ -45,8 +45,12 @@
         }
       </style>
       <div>
+        <div class="col-md-12" style="margin-bottom: 3px;">
+          <a feature="button" class="btn blue bordered" (click)="RouteToNotesList()"><i class=""></i>Cancel</a>
+        </div>
         <!-- Subjective Notes related fields for Emergency Note-->
-        <div >
+        <div class="col-md-12" >
+         
           <subjective-note [subjective-note]="notes.SubjectiveNote"
                            [clinical-detail]="clinicalDetail" (callback-subjectivenote)="CallBackSubjective($event)"></subjective-note>
         </div>
@@ -197,35 +201,34 @@
                       </div>
                     </div>
                   </div>
-                </div>
-          </div>
+            </div>
+        </div>
         <!-- Objective Notes fields-->
         <div class="tab-pane" id="objective">
           <objective-note [objective-note]="notes.ObjectiveNote"
                           [clinical-detail]="clinicalDetail" (callback-objectivenote)="CallBackObjective($event)"></objective-note>
         </div>
-        <div class="col-md-12">
-        <div class="tab-pane col-md-6">
-            <freetext [patDetail]="patVisit"
-                      [editFreeText]="notes.FreeTextNote"
-                      (callback-freetextnotes)="CallBackFreeTexts($event)"> </freetext>
-          </div>
-        <!-- ER-Course -->
-        <form class="hm-form">
-        </form>
+     
+        
         <!-- Assessment-Plan -->
-        <div class="tab-pane col-md-6" id="assessment">
+        <!-- <div class="col-md-12" id="assessment">
           <assessment-plan [editMode]="APeditMode"
                            [assessments]="assessment"
                            (callback-assessmentandplan)="CallBackAssesmentAndPlan($event)">
       
           </assessment-plan>
-        </div>
         
-        <procedure-notes [editProcedureNote]="procedureNote"
-        [patDetail]="patDetail"
+        </div> -->
+        <div class="col-md-12" >
+          <freetext [patDetail]="patVisit"
+                    [editFreeText]="notes.FreeTextNote"
+                    (callback-freetextnotes)="CallBackFreeTexts($event)"> </freetext>
+      </div>
+        <div class="col-md-12">
+        <procedure-notes [editProcedureNote]="notes.ProcedureNote"
+        [patDetail]="patVisit"
         (callback-procedurenotes)="CallBackProcedureNotes($event)">
-</procedure-notes>
+        </procedure-notes>
       </div>
       
         <!-- Start: Instructions related fields for Emergency Note-->
@@ -286,19 +289,19 @@
       </div>
       <div class="row">
           <div class="col-md-12">
-              <div class="col-md-3">
+              <!-- <div class="col-md-3">
                 <button class="btn blue"> Start (Sign) </button>
-            </div>
-            <div class="col-md-3">
+            </div> -->
+            <!-- <div class="col-md-3">
                 <button class="btn btn-success" (click)="SubmitTemplate(1)"> Submit </button>
-            </div>
-            <div class="col-md-3">
+            </div> -->
+            <div class="col-md-1">
                 <button class="btn btn-primary" (click)="SubmitTemplate(0)"> Save </button>
             </div>
-            <div class="col-md-3">
-                <button class="btn blue" (click)="print($event)"> <i class="glyphicon glyphicon-print"></i> Print </button>
+            <!-- <div class="col-md-2">
+                <button class="btn blue" (click)="print($event)"> <i class="glyphicon glyphicon-print"></i> View & Print</button>
         
-            </div>
+            </div> -->
           </div>
         </div>
         <div *ngIf="showView" class="popup-static portlet box portlet-fullscreen" style="margin-bottom:25px">
@@ -310,7 +313,7 @@
                   <div style="padding:10px"> <i class="btn btn-danger pull-right" style="margin-top:10px; margin-right:-10px;" (click)="Close()">X</i> </div>
                   <div class="panel panel-default">
                     <div id="print-template" class="row printStyle print-border">
-                      <div class="panel-heading"> OPD Examination </div>
+                      <!-- <div class="panel-heading"> OPD Examination </div> -->
                       <opd-examination-view [patientVisitId]="patientVisitId"
                       (callback-view)="CallBackView($event)">  </opd-examination-view>
                     </div>

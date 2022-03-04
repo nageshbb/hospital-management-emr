@@ -1,7 +1,7 @@
 
 --START:Avanti:3 March 2022: Chnages for OPD Examination page---
 --Add Columns in vitals for Ayurved
-ALTER TABLE CLN_PatientVitals
+ALTER TABLE  CLN_PatientVitals
 ADD Nadi    int,
     Mala    varchar(20),
     Mutra   varchar(20),
@@ -49,3 +49,36 @@ Begin
 End
 GO
 --END:Avanti:3 March 2022: Chnages for OPD Examination page---
+
+
+--START:NageshBB: 03 March 2022: new changes for build
+Update CFG_PrinterSettings
+set PrinterDisplayName=GroupName+'-Browser-Printer'
+where PrintingType='browser'
+Go
+Update CFG_PrinterSettings
+set IsActive=0 where PrintingType='dotmatrix'
+go
+--END:NageshBB: 03 March 2022: new changes for build
+
+--START: Menka/Nagesh: 03-03-2022: Create table for OPPatients which used for OPDataLoad project
+DROP TABLE IF EXISTS [dbo].[OPPatients];
+Go
+Create table [dbo].[OPPatients](
+	[OPPatientId] [int] IDENTITY(1,1) NOT NULL CONSTRAINT PK_OPPatients PRIMARY KEY,
+	[FirstName] [varchar](50) NULL,
+	[MiddleName] [varchar](50) NULL,
+	[LastName] [varchar](50) NULL,
+	[DateOfBirth] [datetime] NULL,
+	[Age] [varchar](50) NULL,
+	[Gender] [varchar](50) NULL,
+	[VillageCity] [varchar](50) NULL,
+	[Taluka] [varchar](50) NULL,
+	[District] [varchar](50) NULL,
+	[State] [varchar](50) NULL,
+	[Country] [varchar](50) NULL,
+	[IsActive] [bit] default 1,
+	[IsEMRPatient] [bit] default 0
+	);
+GO
+--END: Menka/Nagesh: 03-03-2022: Create table for OPPatients which used for OPDataLoad project

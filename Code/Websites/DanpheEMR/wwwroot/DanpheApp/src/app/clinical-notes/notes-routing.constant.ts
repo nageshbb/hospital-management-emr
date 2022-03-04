@@ -6,7 +6,7 @@ import { PageNotFound } from '../404-error/404-not-found.component';
 import { OPDExaminationComponent } from './OPDExamination/OPD-Examination.component';
 
 export const NotesRoutingConstant = [
-  { path: '', redirectTo: 'OPDExamination', pathMatch: 'full' },
+  { path: '', redirectTo: 'NotesList', pathMatch: 'full' },
   { path: 'NotesList', component: NotesListComponent },
   { path: 'FreeNotes', component: FreeNotesComponent },
   {path:'OPDExamination',component: OPDExaminationComponent},
