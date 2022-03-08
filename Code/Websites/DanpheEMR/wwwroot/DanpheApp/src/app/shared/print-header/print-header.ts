@@ -76,6 +76,22 @@ export class PrintHeaderComponent {
       else
         this.msgBoxServ.showMessage("error", ["Please enter parameter values for BillingHeader"]);
     }
+    else if(this.reportFor == "admission"){
+      this.isLabReport = true;
+      var paramValue = this.coreService.Parameters.find(a => a.ParameterGroupName == "Common" && a.ParameterName == "CustomerHeader").ParameterValue;
+      if (paramValue)
+        this.headerDetail = JSON.parse(paramValue);
+      else
+        this.msgBoxServ.showMessage("error", ["Please enter parameter values for BillingHeader"]);
+    }
+    else if(this.reportFor == "appointent"){
+      this.isLabReport = true;
+      var paramValue = this.coreService.Parameters.find(a => a.ParameterGroupName == "Common" && a.ParameterName == "CustomerHeader").ParameterValue;
+      if (paramValue)
+        this.headerDetail = JSON.parse(paramValue);
+      else
+        this.msgBoxServ.showMessage("error", ["Please enter parameter values for BillingHeader"]);
+    }
 
     else{
     var paramValue = this.coreService.Parameters.find(a => a.ParameterGroupName == "Pharmacy" && a.ParameterName == "Pharmacy Receipt Header").ParameterValue;

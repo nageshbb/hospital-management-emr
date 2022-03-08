@@ -16,6 +16,7 @@ import { forkJoin, of } from 'rxjs';
   styleUrls: ['./rpt-adt-admission-and-discharge-list.component.css']
 })
 export class RPTADTAdmissionAndDischargeListComponent implements OnInit {
+  public dateRange : string = '';
   public fromDate:any;
   public showGrid: boolean = false;
   public toDate:any;
@@ -159,6 +160,7 @@ getBedFeature(res){
   OnFromToDateChange($event) {
     this.fromDate = $event.fromDate;
     this.toDate = $event.toDate;
+    this.dateRange = "<b>Date:</b>&nbsp;" + this.fromDate + "&nbsp;<b>To</b>&nbsp;" + this.toDate;
   }
 
   WardListFormatter(data: any): string {

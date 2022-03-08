@@ -11,6 +11,10 @@ export class AdmissionAndDischargeVM{
     public AdmissionStatus:string;
     public DischargeDate:Date;
     public Number_of_Days:number;
+    public BedCode:string;
+    public Age_Gender:string;
+    public Address:string;
+    public Diagnosis:string;
 
 }
 export class WardModel{
