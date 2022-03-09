@@ -61,7 +61,9 @@
     <div class="col-lg-12 col-sm-12" *ngIf="DailyAppointmentReportData.length>0">
       <danphe-grid [grid-colDefaults]="DailyAppointmentReportColumns" [grid-data]="DailyAppointmentReportData"
         [grid-exportOptions]="gridExportOptions" [grid-showExportNew]="true" (grid-onExport)="OnGridExport($event)"
-        [NepaliDateInGridParams]="NepaliDateInGridSettings"> </danphe-grid>
+        [NepaliDateInGridParams]="NepaliDateInGridSettings"
+        [report-for]="'appointment'"  [grid-date-range]="dateRange"
+        > </danphe-grid>
     </div>
   </div>
 </div>

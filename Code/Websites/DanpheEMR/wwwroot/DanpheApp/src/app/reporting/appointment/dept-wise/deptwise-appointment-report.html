@@ -63,7 +63,8 @@
     <div class="col-lg-12 col-sm-12">
       <danphe-grid [grid-colDefaults]="DepartmentWiseAppointmentReportColumns"
         [grid-data]="DepartmentWiseAppointmentReportData" [grid-exportOptions]="gridExportOptions"
-        [grid-showExport]="true" (grid-actions)="ViewDeptGridAction($event)"> </danphe-grid>
+        [grid-showExport]="true" [report-for]="'appointment'"  [grid-date-range]="dateRange" (grid-actions)="ViewDeptGridAction($event)"> </danphe-grid>
+
     </div>
     <div class="col-md-12" style="margin-bottom: 50px;margin-top: 20px;">
       <div id="dvApptSummary" *ngIf="DepartmentWiseAppointmentReportData && DepartmentWiseAppointmentReportData.length>0">
@@ -116,7 +117,7 @@
   <div class="row">
     <div class="col-lg-12 col-sm-12" *ngIf="DeptwiseAppointmentReportData.length>0">
       <danphe-grid [grid-colDefaults]="DailyAppointmentReportColumns" [grid-data]="DeptwiseAppointmentReportData"
-        [grid-exportOptions]="gridExportOptions" [grid-showExportNew]="true" (grid-onExport)="OnGridExport($event)"
+        [grid-exportOptions]="gridExportOptions" [grid-showExportNew]="true" [report-for]="'appointment'" [grid-date-range]="dateRange" (grid-onExport)="OnGridExport($event)"
         > </danphe-grid>
     </div>
   </div>

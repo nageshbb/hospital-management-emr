@@ -810,6 +810,8 @@ export class ReportGridColumnSettings {
   public AdmisssionAndDischargeList = [
     { headerName: "S.N.", field: "SN", width: 70 },
     { headerName: "Patient Name", field: "PatientName", width: 160 },
+    { headerName: "Age/Gender", field: "Age_Gender", width: 80},
+    { headerName: "Address", field: "Address", width: 80},
     { headerName: "Hospital Code", field: "PatientCode", width: 100 },
     { headerName: "IP Number", field: "VisitCode", width: 100 },
     {
@@ -821,6 +823,8 @@ export class ReportGridColumnSettings {
     { headerName: "AdmittingDoctor", field: "AdmittingDoctorName", width: 160 },
     { headerName: "Ward", field: "WardName", width: 110 },
     { headerName: "Bed Feature", field: "BedFeature", width: 100 },
+    { headerName: "Bed", field: "BedCode", width: 90 },
+    { headerName: "Diagnosis", field: "Diagnosis", width: 120 },
     { headerName: "Status", field: "AdmissionStatus", width: 90 },
     {
       headerName: "Discharged Date",

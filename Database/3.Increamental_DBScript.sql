@@ -82,3 +82,229 @@ Create table [dbo].[OPPatients](
 	);
 GO
 --END: Menka/Nagesh: 03-03-2022: Create table for OPPatients which used for OPDataLoad project
+
+--START: NageshBB : 08-March-2022: Insert core parameter for admission and appointment report header configuration (export and print)
+If not exists (select * from CORE_CFG_Parameters where ParameterGroupName='AppointmentReport' 
+and ParameterName='AppointmentReportGridExportToExcelSetting')
+Begin
+--Insert parameter here
+Insert into CORE_CFG_Parameters(ParameterGroupName,ParameterName, ParameterValue, ValueDataType,Description,ParameterType)
+values
+('AppointmentReport','AppointmentReportGridExportToExcelSetting',	
+'{"PhoneBookAppointmentReport":{"HeaderTitle":"PhoneBook Appointment Report","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false},"DailyAppointmentReport":{"HeaderTitle":"Detailed","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false},"DistrictWiseAppointmentReport":{"HeaderTitle":"District Wise","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false},"DepartmentWiseAppointmentReport":{"HeaderTitle":"Department Wise","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false},"DoctorwiseOutPatient":{"HeaderTitle":"Doctorwise OutPatient","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false}}',	
+'jsonobj',	'Dynamic configuration of header,footer,printby,date range in Appointment reports',	'custom')
+End
+Go
+
+If not exists (select * from CORE_CFG_Parameters where ParameterGroupName='AppointmentReport' 
+and ParameterName='AppointmentReportGridPrintSetting')
+Begin
+--Insert parameter here
+Insert into CORE_CFG_Parameters(ParameterGroupName,ParameterName, ParameterValue, ValueDataType,Description,ParameterType)
+values
+(
+'AppointmentReport',	'AppointmentReportGridPrintSetting',	
+'{"PhoneBookAppointmentReport":{"HeaderTitle":"PhoneBook Appointment Report","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false},"DailyAppointmentReport":{"HeaderTitle":"Detailed","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false},"DistrictWiseAppointmentReport":{"HeaderTitle":"District Wise","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false},"DepartmentWiseAppointmentReport":{"HeaderTitle":"Department Wise","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false},"DoctorwiseOutPatient":{"HeaderTitle":"Doctorwise OutPatient","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false}}',		
+'jsonobj',	'Dynamic configuration of header,footer,printby,date range in Appointment reports',	'custom'
+)
+End
+Go
+
+If not exists (select * from CORE_CFG_Parameters where ParameterGroupName='AdmissionReport' 
+and ParameterName='AdmissionReportGridExportToExcelSetting')
+Begin
+--Insert parameter here
+Insert into CORE_CFG_Parameters(ParameterGroupName,ParameterName, ParameterValue, ValueDataType,Description,ParameterType)
+values
+('AdmissionReport','AdmissionReportGridExportToExcelSetting',	
+'{"TotalAdmittedPatient":{"HeaderTitle":"Admitted Patient","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false},"DischargedPatient":{"HeaderTitle":"Discharged Patient","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false},"TransferredPatient":{"HeaderTitle":"Transferred Patient","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false},"DiagnosisWisePatientReport":{"HeaderTitle":"DiagnosisWise Patient ","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false},"InpatientCensusReport":{"HeaderTitle":"Inpatient Census Report","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false},"AdmissionAndDischargeList":{"HeaderTitle":"Admission And Discharge List","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false}}',	
+'jsonobj',	'Dynamic configuration of header,footer,printby,date range in Admission reports',	'custom')
+
+End
+Go
+
+If not exists (select * from CORE_CFG_Parameters where ParameterGroupName='AdmissionReport' 
+and ParameterName='AdmissionReportGridPrintSetting')
+Begin
+--Insert parameter here
+Insert into CORE_CFG_Parameters(ParameterGroupName,ParameterName, ParameterValue, ValueDataType,Description,ParameterType)
+values
+(
+'AdmissionReport',	'AdmissionReportGridPrintSetting',	
+'{"TotalAdmittedPatient":{"HeaderTitle":"Admitted Patient","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false},"DischargedPatient":{"HeaderTitle":"Discharged Patient","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false},"TransferredPatient":{"HeaderTitle":"Transferred Patient","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false},"DiagnosisWisePatientReport":{"HeaderTitle":"DiagnosisWise Patient ","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false},"InpatientCensusReport":{"HeaderTitle":"Inpatient Census Report","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false},"AdmissionAndDischargeList":{"HeaderTitle":"Admission And Discharge List","ShowHeader":false,"ShowFooter":false,"ShowPrintBy":false,"ShowDateRange":false}}',	
+'jsonobj',	'Dynamic configuration of header,footer,printby,date range in Admission reports',	'custom'
+)
+End
+Go
+
+
+--stored procedure for admission -> admission and discharge list report column added 
+
+/****** Object:  StoredProcedure [dbo].[SP_Report_ADT_AdmissionAndDischargeReport]    Script Date: 07-03-2022 15:17:34 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+/*
+-- =============================================
+Change History
+-----------------------------------------------------------------------------------------
+S.No.    UpdatedBy/Date                        Remarks
+-----------------------------------------------------------------------------------------
+1.      Dev Narayan/2021-09-25          Initial Draft
+2.      Dev Narayan/2021-09-29          Added Discharge date filter
+3.		Nagsh Bulbule/2022-03-08        Added diagnosis, bedcode, address, age_gender columns for show in report
+*/
+-- =============================================
+ALTER PROCEDURE [dbo].[SP_Report_ADT_AdmissionAndDischargeReport]
+   @FromDate Date=null,
+   @ToDate Date=null,
+   @WardId int = null,
+   @DepartmentId int = null,
+   @BedFeatureId int = null,
+   @AdmissionStatus varchar(40)= null,
+   @SearchText varchar(40) = null
+AS
+BEGIN
+SET 
+  @WardId = ISNULL(@WardId, 0);
+SET 
+  @DepartmentId = ISNULL(@DepartmentId, 0);
+SET 
+  @BedFeatureId = ISNULL(@BedFeatureId, 0);
+IF(@AdmissionStatus LIKE '%All%')
+BEGIN
+SET @AdmissionStatus = null;
+END
+
+Select 
+  (
+    Cast(
+      ROW_NUMBER() OVER (
+        ORDER BY 
+          newData.RowNum desc
+      ) AS int
+    )
+  ) AS SN, 
+  newData.PatientName, 
+  newData.PatientCode, 
+  newData.VisitCode, 
+  newData.AdmissionDate, 
+  newData.DepartmentName, 
+  newData.AdmittingDoctorName, 
+  newData.WardName, 
+  newData.BedFeature, 
+  newData.AdmissionStatus, 
+  newData.DischargeDate, 
+  newData.Number_of_Days,
+  newData.Address,
+  newData.Age_Gender,
+  newData.Diagnosis,
+  newData.BedCode,
+  newData.Age_Gender,
+  newData.Address,
+  newData.Diagnosis
+  
+FROM 
+  (
+    select 
+      ROW_NUMBER() OVER(
+        PARTITION BY adm.PatientAdmissionId 
+        ORDER BY 
+          adtPat.StartedOn DESC
+      ) AS RowNum, 
+      adm.PatientAdmissionId, 
+      adm.AdmissionDate, 
+      pat.PatientCode, 
+      visit.VisitCode, 
+      pat.FirstName + ' ' + ISNULL(pat.MiddleName + ' ', '') + pat.LastName AS 'PatientName', 
+      ISNULL(emp.Salutation + '. ', '') + emp.FirstName + ' ' + ISNULL(emp.MiddleName + ' ', '') + emp.LastName 'AdmittingDoctorName', 
+      bed.BedCode as 'BedCode', 
+      bedf.BedFeatureName as BedFeature, 
+      bedf.BedFeatureId, 
+      adtPat.StartedOn, 
+      dept.DepartmentName, 
+      dept.DepartmentId, 
+      ward.WardName, 
+      ward.WardID, 
+      adm.AdmissionStatus, 
+      adm.DischargeDate, 
+      case when adm.AdmissionStatus = 'admitted' then DATEDIFF(
+        DAY, 
+        adm.AdmissionDate, 
+        GETDATE()
+      ) else DATEDIFF(
+        DAY, adm.AdmissionDate, adm.DischargeDate
+      ) end AS 'Number_of_Days',
+	  pat.Age+'/'+pat.Gender as 'Age_Gender',
+	  pat.Address as 'Address',
+	  '' as 'Diagnosis'
+    from 
+      ADT_PatientAdmission adm 
+      join ADT_TXN_PatientBedInfo adtPat on adm.PatientId = adtPat.PatientId 
+      join PAT_PatientVisits visit on adm.PatientVisitId = visit.PatientVisitId 
+      JOIN PAT_Patient pat ON pat.PatientId = visit.PatientId 
+      join ADT_MST_Ward ward on ward.WardID = adtPat.WardId 
+      JOIN ADT_Bed bed on bed.BedID = adtPat.BedId 
+      JOIN ADT_MAP_BedFeaturesMap bedm on bed.BedID = bedm.BedId 
+      JOIN ADT_MST_BedFeature bedf on bedm.BedFeatureId = bedf.BedFeatureId 
+      left join EMP_EMPLOYEE emp ON adm.AdmittingDoctorId = emp.EmployeeId 
+      left join MST_Department dept on dept.DepartmentId = adtPat.RequestingDeptId
+	  
+  ) newData 
+where 
+  newData.RowNum = 1 
+  and (CONVERT(date, newData.AdmissionDate) between @FromDate 
+  and @ToDate 
+  or CONVERT(date, newData.DischargeDate) between @FromDate 
+  and @ToDate )
+  and (
+    newData.WardID = Convert(
+      VARCHAR(40), 
+      @WardId
+    ) 
+    or Convert(
+      VARCHAR(40), 
+      @WardId
+    )= 0
+  ) 
+  and (
+    newData.DepartmentId = Convert(
+      VARCHAR(40), 
+      @DepartmentId
+    ) 
+    or Convert(
+      VARCHAR(40), 
+      @DepartmentId
+    )= 0
+  ) 
+  and (
+    newData.BedFeatureId = Convert(
+      VARCHAR(40), 
+      @BedFeatureId
+    ) 
+    or Convert(
+      VARCHAR(40), 
+      @BedFeatureId
+    )= 0
+  ) 
+  and (
+    newData.AdmissionStatus NOT LIKE '%cancel%'
+  )
+  and (
+    newData.AdmissionStatus LIKE '%' + @AdmissionStatus + '%' 
+    OR @AdmissionStatus is Null 
+  ) 
+  and
+   (newData.PatientName like '%' + ISNULL(@SearchText,'') +'%' 
+    or newData.VisitCode like '%' + ISNULL(@SearchText,'') + '%'
+	or newData.PatientCode like '%' + ISNULL(@SearchText,'') + '%')
+
+order by 
+  newData.AdmissionDate desc
+
+END
+
+Go
+--END: NageshBB : 08-March-2022: Insert core parameter for admission and appointment report header configuration (export and print)
+

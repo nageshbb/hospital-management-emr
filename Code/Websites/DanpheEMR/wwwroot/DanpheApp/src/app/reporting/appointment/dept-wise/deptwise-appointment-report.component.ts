@@ -30,11 +30,11 @@ export class RPT_APPT_DeptWiseAppointmentReportComponent {
   public summary = { tot_new: 0, tot_followup: 0, tot_referral: 0, tot_all: 0 };
   public selGenderName: string = "all";
   // public summaryHtml: string = null;
-
   public showDeptDetails:boolean = false;
   DeptwiseAppointmentReportData: Array<RPT_APPT_DailyAppointmentReportModel> = new Array<RPT_APPT_DailyAppointmentReportModel>();
   //public currentdailyappointment: RPT_APPT_DailyAppointmentReportModel = new RPT_APPT_DailyAppointmentReportModel();
   DailyAppointmentReportColumns: Array<any> = null;
+  public dateRange:string="";	
   gridExportOptions = {
     fileName: 'DepartmentwiseAppointmentList_' + moment().format('YYYY-MM-DD') + '.xls',
     //displayColumns: ['PatientCode', 'ShortName', 'Gender', 'MiddleName', 'DateOfBirth', 'PhoneNumber']
@@ -108,6 +108,7 @@ export class RPT_APPT_DeptWiseAppointmentReportComponent {
 
     this.currentdepartmentappointment.fromDate = this.fromDate;
     this.currentdepartmentappointment.toDate = this.toDate;
+    this.dateRange="<b>Date:</b>&nbsp;"+this.fromDate+"&nbsp;<b>To</b>&nbsp;"+this.toDate;
   }
 
   public LoadDeptList() {
