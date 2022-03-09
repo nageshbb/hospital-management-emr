@@ -355,6 +355,27 @@ namespace DanpheEMR.Controllers.Reporting
             }
             return DanpheJSONConvert.SerializeObject(responseData);
         }
+
+        public string DailyAppointmentByDepartmentReport(DateTime FromDate, DateTime ToDate, int DepartmentId = 0)
+        {
+            //DanpheHTTPResponse<List<DailyAppointmentReport>> responseData = new DanpheHTTPResponse<List<DailyAppointmentReport>>();
+            DanpheHTTPResponse<DataTable> responseData = new DanpheHTTPResponse<DataTable>();
+            try
+            {
+                ReportingDbContext reportingDbContext = new ReportingDbContext(connString);
+                DataTable dailyappointmentbydept= reportingDbContext.DailyAppointmentByDepartmentReport(FromDate, ToDate, DepartmentId);
+
+                responseData.Status = "OK";
+                responseData.Results = dailyappointmentbydept;
+            }
+            catch (Exception ex)
+            {
+                responseData.Status = "Failed";
+                responseData.ErrorMessage = ex.Message;
+            }
+            return DanpheJSONConvert.SerializeObject(responseData);
+        }
+
         [DanpheViewFilter("reports-appointmentmain-dailyappointmentreport-view")]
         public IActionResult DailyAppointmentReportView()
         {
