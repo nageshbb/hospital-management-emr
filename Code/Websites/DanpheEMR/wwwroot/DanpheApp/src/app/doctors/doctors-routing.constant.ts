@@ -52,7 +52,7 @@ export const DoctorsRoutingConstant = [
         canDeactivate: [ResetDoctorcontextGuard],
         canActivate: [AuthGuardService, ResetDoctorcontextGuard],
         children: [
-          { path: "", redirectTo: "PatientOverview", pathMatch: "full" },
+          { path: "", redirectTo: "NotesSummary", pathMatch: "full" },
           {
             path: "PatientOverview",
             component: PatientOverviewComponent,

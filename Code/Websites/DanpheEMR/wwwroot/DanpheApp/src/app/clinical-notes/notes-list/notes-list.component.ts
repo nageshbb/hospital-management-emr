@@ -37,6 +37,9 @@ export class NotesListComponent {
   public showProgressViewNoteList: boolean = false;
   public templatedata: NotesModel = new NotesModel();
   public patVisit: Visit = new Visit();
+  public showClinicalOPDExaminationNotesView:boolean=false;
+  public patientVisitId:number=0;
+ 
   public options = {
     headers: new HttpHeaders({
       "Content-Type": "application/x-www-form-urlencoded",
@@ -213,6 +216,11 @@ export class NotesListComponent {
             this.showClinicalPrescriptionNoteView = true;
             this.notetemplateBLService.NotesId = $event.Data.NotesId;
           } 
+          if ($event.Data.TemplateName == "OPD Examination") {
+            this.patientVisitId=$event.Data.PatientVisitId;
+            this.notetemplateBLService.NotesId=$event.Data.NotesId;
+            this.showClinicalOPDExaminationNotesView = true;
+          } 
         }
         break;
       case "edit": {
@@ -249,6 +257,8 @@ export class NotesListComponent {
     this.showClinicalPrescriptionNoteView = false;
     this.showHPView = false;
     this.showEmergrncyNoteView = false;
+    this.showClinicalOPDExaminationNotesView=false;
+    this.patientVisitId=0;
   }
 
   //Get Pharmacy Billing Header Parameter from Core Service (Database) assign to local variable
@@ -284,7 +294,17 @@ export class NotesListComponent {
     popupWinindow.document.close();
   }
 
-
+  RouteToAddOpdExamination(){
+    this.router.navigate([
+      "/Doctors/PatientOverviewMain/NotesSummary/OPDExamination",
+    ]);
+  }
+  CallBackView($event) {
+    // if ($event.Data.TemplateName ==  this.NoteType) {
+    //   this.showView = true;
+    //   this.notetemplateBLService.NotesId = $event.Data.NotesId;
+    // }
+  }
   RouteToAddNotes() {
     if (
       this.securityService.currentModule &&

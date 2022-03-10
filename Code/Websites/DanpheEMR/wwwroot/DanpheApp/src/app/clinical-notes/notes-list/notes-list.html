@@ -2,8 +2,11 @@
 
 <div style="margin-top:20px;" class="row"> 
   <!--Add Note Button-->
-  <div class="col-md-12" style="margin-bottom: 10px;">
+  <!-- <div class="col-md-12" style="margin-bottom: 10px;">
     <a feature="button" class="btn blue bordered" (click)="RouteToAddNotes()"><i class="fa fa-plus"></i>Add Notes</a>
+  </div> -->
+  <div class="col-md-12" style="margin-bottom: 10px;">
+    <a feature="button" class="btn blue bordered" (click)="RouteToAddOpdExamination()"><i class="fa fa-plus"></i>Add Examination</a>
   </div>
   <div class="tabbable-custom">
     <div class="tab-content">
@@ -587,3 +590,29 @@
 
 
 <!-- End: Clinical Prescrription Note View page pop window-->
+
+<!--Start: clinical opd examination note view page pop window-->
+
+<div *ngIf="showClinicalOPDExaminationNotesView" class="popup-static portlet box portlet-fullscreen" style="margin-bottom:25px">
+  <div class="portlet-body" style="background-color: white">
+    <div class="col-md-12">
+      <div class="col-md-2 hidden-xs hidden-sm" style="margin-right: 24px;"> </div>
+      <div class="col-md-9 col-xs-12 modelbox-div" style="margin-right: 24px;"> 
+        <!--col-sm-12-->
+        <div style="padding:10px"> <i class="btn btn-danger pull-right" style="margin-top:10px; margin-right:-10px;" (click)="Close()">X</i> </div>
+        <div class="panel panel-default">
+          <div id="print-template" class="row printStyle print-border">
+            <!-- <div class="panel-heading"> OPD Examination </div> -->
+            <opd-examination-view [patientVisitId]="patientVisitId"
+            (callback-view)="CallBackView($event)">  </opd-examination-view>
+          </div>
+          <div class="row center-style">
+            <div class="col-md-12 col-xs-12 "> <a (click)="printTemplate()" class="btn btn-default"> Print <i class="glyphicon glyphicon-print"></i> </a><span> </span><span> </span> &nbsp; </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--End: clinical opd examination note view page pop window-->

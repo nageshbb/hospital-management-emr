@@ -22,7 +22,7 @@ export class RPT_APPT_DailyAppointmentReportComponent {
   public currentdailyappointment: RPT_APPT_DailyAppointmentReportModel = new RPT_APPT_DailyAppointmentReportModel();
   dlService: DLService = null;
   public NepaliDateInGridSettings: NepaliDateInGridParams = new NepaliDateInGridParams();
-
+  public dateRange:string="";	
   gridExportOptions = {
     fileName: 'AppointmentList' + moment().format('YYYY-MM-DD') + '.xls',
   };
@@ -121,5 +121,6 @@ export class RPT_APPT_DailyAppointmentReportComponent {
 
     this.currentdailyappointment.fromDate = this.fromDate;
     this.currentdailyappointment.toDate = this.toDate;
+    this.dateRange="<b>Date:</b>&nbsp;"+this.fromDate+"&nbsp;<b>To</b>&nbsp;"+this.toDate;
   }
 }

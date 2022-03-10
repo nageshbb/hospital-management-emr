@@ -133,7 +133,9 @@
       [grid-data]="TotalPatientData"
       [grid-exportOptions]="gridExportOptions"
       [grid-showExport]="true" 
-      [NepaliDateInGridParams]="NepaliDateInGridSettings"> </danphe-grid>
+      [NepaliDateInGridParams]="NepaliDateInGridSettings"
+      [report-for]="'admission'"  [grid-date-range]="dateRange"
+      > </danphe-grid>
 		</div>
 	</div>
   <div *ngIf="showSummary" style="margin-bottom: 25px; width: 100%; float: left;"  id="summaryFooter">

@@ -689,6 +689,7 @@ export class ReportGridColumnSettings {
 
   //All Appointment Grid Reports Constant Setting Start
   public DailyAppointmentReport = [
+    { headerName: "Sr No.", valueGetter: "node.rowIndex+1", width: 70 },
     {
       headerName: "Date/Time",
       field: "Date",
@@ -696,11 +697,13 @@ export class ReportGridColumnSettings {
     },
     { headerName: "Hospital No.", field: "PatientCode", width: 120 },
     { headerName: "Patient Name", field: "Patient_Name", width: 160 },
-    { headerName: "Phone", field: "PhoneNumber", width: 120 },
-    { headerName: "Age", field: "Age", width: 100 },
+    { headerName: "Phone", field: "PhoneNumber", width: 100 },
+    { headerName: "Age", field: "Age", width: 70 },
     { headerName: "Gender", field: "Gender", width: 100 },
-    { headerName: "District", field: "DistrictName", width: 120 },
+    { headerName: "District", field: "DistrictName", width: 100 },
     { headerName: "Doctor", field: "Doctor_Name", width: 120 },
+    { headerName: "Address", field: "Address", width: 100 },
+    { headerName: "Diagnosis", field: "Diagnosis", width: 100 },
     { headerName: "Department", field: "DepartmentName", width: 120 },
     // { headerName: "Visit Type", field: "VisitType", width: 140 },
     { headerName: "Appointment Type", field: "AppointmentType", width: 140 }
@@ -807,6 +810,8 @@ export class ReportGridColumnSettings {
   public AdmisssionAndDischargeList = [
     { headerName: "S.N.", field: "SN", width: 70 },
     { headerName: "Patient Name", field: "PatientName", width: 160 },
+    { headerName: "Age/Gender", field: "Age_Gender", width: 80},
+    { headerName: "Address", field: "Address", width: 80},
     { headerName: "Hospital Code", field: "PatientCode", width: 100 },
     { headerName: "IP Number", field: "VisitCode", width: 100 },
     {
@@ -818,6 +823,8 @@ export class ReportGridColumnSettings {
     { headerName: "AdmittingDoctor", field: "AdmittingDoctorName", width: 160 },
     { headerName: "Ward", field: "WardName", width: 110 },
     { headerName: "Bed Feature", field: "BedFeature", width: 100 },
+    { headerName: "Bed", field: "BedCode", width: 90 },
+    { headerName: "Diagnosis", field: "Diagnosis", width: 120 },
     { headerName: "Status", field: "AdmissionStatus", width: 90 },
     {
       headerName: "Discharged Date",
@@ -2168,7 +2175,15 @@ export class ReportGridColumnSettings {
         {headerName: "New", field: "NewAppointment", width: 150 },
         {headerName: "Followup", field: "Followup", width: 150 },
         {headerName: "Referral", field: "Referral", width: 150 },
-        {headerName: "Total", field: "TotalAppointments", width: 150 }
+        {headerName: "Total", field: "TotalAppointments", width: 150 },
+        {
+          headerName: "Actions",
+          field: "",
+          width: 120,
+          template: `<a danphe-grid-action="view-details" class="grid-action">
+                            <i class="fa fa-eye"></i>View Details
+                     </a>`,
+        },
   ];
 
   public RPT_APPT_DistrictWiseAppointmentCounts = [
@@ -2229,4 +2244,25 @@ export class ReportGridColumnSettings {
     { headerName: "Registered Date", field: "Registered Date", width: 100 },
     { headerName: "Edited Date", field: "Edited Date", width: 100 }
   ];
+
+  // public DetailDeptwiseAppointmentReport = [
+  //   { headerName: "Sr No.", valueGetter: "node.rowIndex+1", width: 70 },
+  //   {
+  //     headerName: "Date/Time",
+  //     field: "Date",
+  //     width: 140,
+  //   },
+  //   { headerName: "Hospital No.", field: "PatientCode", width: 120 },
+  //   { headerName: "Patient Name", field: "Patient_Name", width: 160 },
+  //   { headerName: "Phone", field: "PhoneNumber", width: 100 },
+  //   { headerName: "Age", field: "Age", width: 70 },
+  //   { headerName: "Gender", field: "Gender", width: 100 },
+  //   // { headerName: "District", field: "DistrictName", width: 100 },
+  //   { headerName: "Doctor", field: "Doctor_Name", width: 120 },
+  //   { headerName: "Address", field: "Address", width: 100 },
+  //   { headerName: "Diagnosis", field: "Diagnosis", width: 100 },
+  //   { headerName: "Department", field: "DepartmentName", width: 120 },
+  //   // { headerName: "Visit Type", field: "VisitType", width: 140 },
+  //   { headerName: "Appointment Type", field: "AppointmentType", width: 140 }
+  // ];
 }

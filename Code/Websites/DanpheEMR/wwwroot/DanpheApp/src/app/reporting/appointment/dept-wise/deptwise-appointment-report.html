@@ -4,7 +4,7 @@
     font-size: 16px;
   }
 </style>
-<div class="wrapper">
+<div *ngIf="!showDeptDetails" class="wrapper">
   <div class="row">
     <form [formGroup]="currentdepartmentappointment.DyanamicValidator" class="form-horizontal">
       <div class="form-body">
@@ -63,7 +63,8 @@
     <div class="col-lg-12 col-sm-12">
       <danphe-grid [grid-colDefaults]="DepartmentWiseAppointmentReportColumns"
         [grid-data]="DepartmentWiseAppointmentReportData" [grid-exportOptions]="gridExportOptions"
-        [grid-showExport]="true"> </danphe-grid>
+        [grid-showExport]="true" [report-for]="'appointment'"  [grid-date-range]="dateRange" (grid-actions)="ViewDeptGridAction($event)"> </danphe-grid>
+
     </div>
     <div class="col-md-12" style="margin-bottom: 50px;margin-top: 20px;">
       <div id="dvApptSummary" *ngIf="DepartmentWiseAppointmentReportData && DepartmentWiseAppointmentReportData.length>0">
@@ -92,6 +93,32 @@
           </tbody>
         </table>
       </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="showDeptDetails" class="wrapper">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="caption custom-caption" style="float: left;"> <i class="glyphicon glyphicon-asterisk"></i> <span
+          class="caption-subject">Department Wise Appointment Report</span>
+      </div>
+      <div style="float: right;font-size: 13px;color: grey;">
+        *Note: Inpatient Visits (Admissions) are not included in this report.
+      </div>
+    </div>
+  </div>
+  
+  <!-- <ng-template #backButton> -->
+    <button class="btn blue" type="button" (click)="HideDeptDetails()">
+        <i class="fa fa-arrow-left"></i>
+        Back
+    </button>
+  <!-- </ng-template> -->
+  <div class="row">
+    <div class="col-lg-12 col-sm-12" *ngIf="DeptwiseAppointmentReportData.length>0">
+      <danphe-grid [grid-colDefaults]="DailyAppointmentReportColumns" [grid-data]="DeptwiseAppointmentReportData"
+        [grid-exportOptions]="gridExportOptions" [grid-showExportNew]="true" [report-for]="'appointment'" [grid-date-range]="dateRange" (grid-onExport)="OnGridExport($event)"
+        > </danphe-grid>
     </div>
   </div>
 </div>

@@ -8,6 +8,8 @@ import { MessageboxService } from '../../../shared/messagebox/messagebox.service
 import { NepaliDateInGridParams, NepaliDateInGridColumnDetail } from '../../../shared/danphe-grid/NepaliColGridSettingsModel';
 import { CommonFunctions } from '../../../shared/common.functions';
 import { Department } from '../../../settings-new/shared/department.model';
+import { GridEmitModel } from '../../../shared/danphe-grid/grid-emit.model';
+import { RPT_APPT_DailyAppointmentReportModel } from '../daily-appointments/daily-appointment-report.model';
 
 @Component({
   templateUrl: "./deptwise-appointment-report.html"
@@ -28,7 +30,11 @@ export class RPT_APPT_DeptWiseAppointmentReportComponent {
   public summary = { tot_new: 0, tot_followup: 0, tot_referral: 0, tot_all: 0 };
   public selGenderName: string = "all";
   // public summaryHtml: string = null;
-
+  public showDeptDetails:boolean = false;
+  DeptwiseAppointmentReportData: Array<RPT_APPT_DailyAppointmentReportModel> = new Array<RPT_APPT_DailyAppointmentReportModel>();
+  //public currentdailyappointment: RPT_APPT_DailyAppointmentReportModel = new RPT_APPT_DailyAppointmentReportModel();
+  DailyAppointmentReportColumns: Array<any> = null;
+  public dateRange:string="";	
   gridExportOptions = {
     fileName: 'DepartmentwiseAppointmentList_' + moment().format('YYYY-MM-DD') + '.xls',
     //displayColumns: ['PatientCode', 'ShortName', 'Gender', 'MiddleName', 'DateOfBirth', 'PhoneNumber']
@@ -45,6 +51,7 @@ export class RPT_APPT_DeptWiseAppointmentReportComponent {
     this.currentdepartmentappointment.toDate = moment().format('YYYY-MM-DD');
     this.GetDepartments();
     this.DepartmentWiseAppointmentReportColumns = this.reportServ.reportGridCols.RPT_APPT_DepartmentWiseAppointmentCounts;
+    this.DailyAppointmentReportColumns = this.reportServ.reportGridCols.DailyAppointmentReport;
   }
 
 
@@ -101,6 +108,7 @@ export class RPT_APPT_DeptWiseAppointmentReportComponent {
 
     this.currentdepartmentappointment.fromDate = this.fromDate;
     this.currentdepartmentappointment.toDate = this.toDate;
+    this.dateRange="<b>Date:</b>&nbsp;"+this.fromDate+"&nbsp;<b>To</b>&nbsp;"+this.toDate;
   }
 
   public LoadDeptList() {
@@ -134,6 +142,79 @@ export class RPT_APPT_DeptWiseAppointmentReportComponent {
       });
   }
 
+  ViewDeptGridAction($event: GridEmitModel) {
+    switch ($event.Action) {
+      case "view-details":
+        {
+          // //assign necessary values of patient here..
+           
+          this.GetDailyAppointmentByDepartment($event);
+        }
+        break;
+      default:
+        break;
+    }
+  }
+  GetDailyAppointmentByDepartment(data){
+    var selDept = data.Data;
+    if (this.currentdepartmentappointment.fromDate != null && this.currentdepartmentappointment.toDate != null) {
+      this.dlService.Read("/Reporting/DailyAppointmentByDepartmentReport?FromDate="
+        + this.currentdepartmentappointment.fromDate + "&ToDate=" + this.currentdepartmentappointment.toDate
+        + "&DepartmentId=" + selDept.DepartmentId)
+        .map(res => res)
+        .finally(() => { })//re-enable the show-report button.
+        .subscribe(res => this.SuccessDetails(res),
+          res => this.ErrorDetails(res)
+        );
+    } else {
+
+      this.msgBoxServ.showMessage("error", ['Dates Provided is not Proper']);
+    }
+  }
+
+  ErrorDetails(err) {
+    this.msgBoxServ.showMessage("error", [err]);
+  }
+  SuccessDetails(res) {
+    if (res.Status == "OK") {
+      if (res.Results && res.Results.length > 0) {
+
+        this.DeptwiseAppointmentReportData = res.Results;
+        this.showDeptDetails = true;
+      }
+      else {
+        this.msgBoxServ.showMessage("notice-message", ['Data is Not Available Between Selected Parameter ....Try Different'])
+      }
+    }
+    else {
+      this.msgBoxServ.showMessage("failed", [res.ErrorMessage]);
+    }
+  }
+
+  HideDeptDetails(){
+    
+    this.showDeptDetails = false;
+  }
+
+  OnGridExport($event: GridEmitModel) {
+    this.dlService.ReadExcel("/ReportingNew/ExportToExcelDailyAppointment?FromDate="
+      + this.currentdepartmentappointment.fromDate + "&ToDate=" + this.currentdepartmentappointment.toDate
+      + "&Doctor_Name=" + "" + "&AppointmentType=" + "")
+      .map(res => res)
+      .subscribe(data => {
+        let blob = data;
+        let a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "DetiledDepartmentwiseAppointment_" + moment().format("DD-MMM-YYYY_HHmmA") + '.xls';
+        document.body.appendChild(a);
+        a.click();
+      },
+        res => this.ErrorMsg(res));
+  }
+  ErrorMsg(err) {
+    this.msgBoxServ.showMessage("error", ["Sorry!!! Not able export the excel file."]);
+    console.log(err.ErrorMessage);
+  }
 }
 
 

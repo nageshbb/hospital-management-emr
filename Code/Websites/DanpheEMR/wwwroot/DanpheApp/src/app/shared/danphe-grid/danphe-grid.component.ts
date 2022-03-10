@@ -987,6 +987,14 @@ export class DanpheGridComponent implements OnInit, AfterViewInit {
         var printSettingParameter = JSON.parse(this.coreservice.Parameters.find(p => p.ParameterGroupName == "SystemAdminReport" && p.ParameterName == "SystemAdminReportPrintSetting").ParameterValue);
         var exportToExcelSettingParameter = JSON.parse(this.coreservice.Parameters.find(p => p.ParameterGroupName == "SystemAdminReport" && p.ParameterName == "SystemAdminReportExportToExcelSetting").ParameterValue);
       }
+      else if (this.reportFor == "admission") {
+        var printSettingParameter = JSON.parse(this.coreservice.Parameters.find(p => p.ParameterGroupName == "AdmissionReport" && p.ParameterName == "AdmissionReportGridPrintSetting").ParameterValue);
+        var exportToExcelSettingParameter = JSON.parse(this.coreservice.Parameters.find(p => p.ParameterGroupName == "AdmissionReport" && p.ParameterName == "AdmissionReportGridExportToExcelSetting").ParameterValue);
+      }
+      else if (this.reportFor == "appointment") {
+        var printSettingParameter = JSON.parse(this.coreservice.Parameters.find(p => p.ParameterGroupName == "AppointmentReport" && p.ParameterName == "AppointmentReportGridPrintSetting").ParameterValue);
+        var exportToExcelSettingParameter = JSON.parse(this.coreservice.Parameters.find(p => p.ParameterGroupName == "AppointmentReport" && p.ParameterName == "AppointmentReportGridExportToExcelSetting").ParameterValue);
+      }
       else {
         var printSettingParameter = JSON.parse(this.coreservice.Parameters.find(p => p.ParameterGroupName == "ReportSetting" && p.ParameterName == "PharmacyGridPrintSetting").ParameterValue);
         var exportToExcelSettingParameter = JSON.parse(this.coreservice.Parameters.find(p => p.ParameterGroupName == "ReportSetting" && p.ParameterName == "PharmacyGridExportToExcelSetting").ParameterValue);
@@ -1316,6 +1324,68 @@ export class DanpheGridComponent implements OnInit, AfterViewInit {
             if (!!exportToExcelSettingParameter) this.paramExportToExcelData = exportToExcelSettingParameter["MaterializedSalesViewReport"]
             break;
           }
+          // START: Admission Report configuration
+          case "/Reports/AdmissionMain/TotalAdmittedPatient": {
+            if (!!printSettingParameter) this.paramData = printSettingParameter["TotalAdmittedPatient"];
+            if (!!exportToExcelSettingParameter) this.paramExportToExcelData = exportToExcelSettingParameter["TotalAdmittedPatient"]
+            break;
+          }
+          case "/Reports/AdmissionMain/DischargedPatient": {
+            if (!!printSettingParameter) this.paramData = printSettingParameter["DischargedPatient"];
+            if (!!exportToExcelSettingParameter) this.paramExportToExcelData = exportToExcelSettingParameter["DischargedPatient"]
+            break;
+          }
+          case "/Reports/AdmissionMain/TransferredPatient": {
+            if (!!printSettingParameter) this.paramData = printSettingParameter["TransferredPatient"];
+            if (!!exportToExcelSettingParameter) this.paramExportToExcelData = exportToExcelSettingParameter["TransferredPatient"]
+            break;
+          }
+          case "/Reports/AdmissionMain/DiagnosisWisePatientReport": {
+            if (!!printSettingParameter) this.paramData = printSettingParameter["DiagnosisWisePatientReport"];
+            if (!!exportToExcelSettingParameter) this.paramExportToExcelData = exportToExcelSettingParameter["DiagnosisWisePatientReport"]
+            break;
+          }
+          case "/Reports/AdmissionMain/InpatientCensusReport": {
+            if (!!printSettingParameter) this.paramData = printSettingParameter["InpatientCensusReport"];
+            if (!!exportToExcelSettingParameter) this.paramExportToExcelData = exportToExcelSettingParameter["InpatientCensusReport"]
+            break;
+          }
+          case "/Reports/AdmissionMain/AdmissionAndDischargeList": {
+            if (!!printSettingParameter) this.paramData = printSettingParameter["AdmissionAndDischargeList"];
+            if (!!exportToExcelSettingParameter) this.paramExportToExcelData = exportToExcelSettingParameter["AdmissionAndDischargeList"]
+            break;
+          }
+          // END: Admission Report configuration
+
+          // START: Appointment Report configuration
+          case "/Reports/AppointmentMain/DailyAppointmentReport": {
+            if (!!printSettingParameter) this.paramData = printSettingParameter["DailyAppointmentReport"];
+            if (!!exportToExcelSettingParameter) this.paramExportToExcelData = exportToExcelSettingParameter["DailyAppointmentReport"]
+            break;
+          }
+          case "/Reports/AppointmentMain/DistrictWiseAppointmentReport": {
+            if (!!printSettingParameter) this.paramData = printSettingParameter["DistrictWiseAppointmentReport"];
+            if (!!exportToExcelSettingParameter) this.paramExportToExcelData = exportToExcelSettingParameter["DistrictWiseAppointmentReport"]
+            break;
+          }
+          case "/Reports/AppointmentMain/DepartmentWiseAppointmentReport": {
+            if (!!printSettingParameter) this.paramData = printSettingParameter["DepartmentWiseAppointmentReport"];
+            if (!!exportToExcelSettingParameter) this.paramExportToExcelData = exportToExcelSettingParameter["DepartmentWiseAppointmentReport"]
+            break;
+          }
+          case "/Reports/AppointmentMain/DoctorwiseOutPatient": {
+            if (!!printSettingParameter) this.paramData = printSettingParameter["DoctorwiseOutPatient"];
+            if (!!exportToExcelSettingParameter) this.paramExportToExcelData = exportToExcelSettingParameter["DoctorwiseOutPatient"]
+            break;
+          }  
+          case "/Reports/AppointmentMain/PhoneBookAppointmentReport": {
+            if (!!printSettingParameter) this.paramData = printSettingParameter["PhoneBookAppointmentReport"];
+            if (!!exportToExcelSettingParameter) this.paramExportToExcelData = exportToExcelSettingParameter["PhoneBookAppointmentReport"]
+            break;
+          }
+          // END: Appointment Report configuration
+
+          
           default:
             this.paramData = null;
             this.paramExportToExcelData = null;
@@ -1462,6 +1532,26 @@ export class DanpheGridComponent implements OnInit, AfterViewInit {
         }
       else
         this.msgBoxServ.showMessage("error", ["Error getting parameters"]);
+    }
+    else if (reportFor == 'admission') {
+      var customerHeaderparam = this.coreService.Parameters.find(a => a.ParameterGroupName == "Common" && a.ParameterName == "CustomerHeader");
+      if (customerHeaderparam != null) {
+        var customerHeaderParamValue = customerHeaderparam.ParameterValue;
+        if (customerHeaderParamValue) {
+          this.headerDetail = JSON.parse(customerHeaderParamValue);
+        }
+      } else
+      this.msgBoxServ.showMessage("error", ["Error getting parameters"]);
+    }
+    else if (reportFor == 'appointment') {
+      var customerHeaderparam = this.coreService.Parameters.find(a => a.ParameterGroupName == "Common" && a.ParameterName == "CustomerHeader");
+      if (customerHeaderparam != null) {
+        var customerHeaderParamValue = customerHeaderparam.ParameterValue;
+        if (customerHeaderParamValue) {
+          this.headerDetail = JSON.parse(customerHeaderParamValue);
+        }
+      } else
+      this.msgBoxServ.showMessage("error", ["Error getting parameters"]);
     }
     else {
       this.headerDetail = '';

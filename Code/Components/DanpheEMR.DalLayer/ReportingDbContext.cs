@@ -621,6 +621,20 @@ namespace DanpheEMR.DalLayer
         }
         #endregion
 
+        #region Daily Appointment By Department Report
+        public DataTable DailyAppointmentByDepartmentReport(DateTime FromDate, DateTime ToDate, int DepartmentId)
+        {
+            List<SqlParameter> paramList = new List<SqlParameter>() {
+                new SqlParameter("@FromDate", FromDate),
+                new SqlParameter("@ToDate", ToDate),
+                new SqlParameter("@DepartmentId", DepartmentId)
+                
+            };
+            DataTable dailyAppointmentRptData = DALFunctions.GetDataTableFromStoredProc("SP_Report_Appointment_DailyAppointmentByDepartmentReport", paramList, this);
+            return dailyAppointmentRptData;
+        }
+        #endregion
+        
         #region PhoneBook Appointment Report
         public DataTable PhoneBookAppointmentReport(DateTime FromDate, DateTime ToDate, string Doctor_Name, string AppointmentStatus)
         {

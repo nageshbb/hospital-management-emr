@@ -92,6 +92,8 @@ namespace DanpheEMR.DalLayer
             this.AuditDisabled = true;
 
         }
+        public DbSet<IntegrationModel> IntegrationName { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
 
@@ -171,6 +173,7 @@ namespace DanpheEMR.DalLayer
             modelBuilder.Entity<PrinterSettingsModel>().ToTable("CFG_PrinterSettings");
 
             modelBuilder.Entity<LabVendorsModel>().ToTable("Lab_MST_LabVendors");
+            modelBuilder.Entity<IntegrationModel>().ToTable("ServiceDepartment_MST_IntegrationName");
         }
 
         //Sud: 14sept'18 -- 
