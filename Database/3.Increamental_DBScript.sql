@@ -421,3 +421,10 @@ END
 GO
 --	end: Menka : 09-March-2022: Altered stored procedure for DailyAppointment report and created stored procedure for departmentwiseDailyAppointment report
 
+-- Start : DeepakS :11-March-2022 : core_parameters  insert script for show/hide billing information on patient-HistoryPage 
+
+Insert Into core_cfg_Parameters (ParameterGroupName,ParameterName,ParameterValue,ValueDataType,Description,ParameterType)
+Values ( 'Patient','ShowBillDetailsOnHistoryPage','true','boolean', 'It will show and hide bill detail in History pages','Custom')
+go
+
+-- end : DeepakS :11-March-2022 : core_parameters  insert script for show/hide billing information on patient-HistoryPage 
