@@ -428,3 +428,18 @@ Values ( 'Patient','ShowBillDetailsOnHistoryPage','true','boolean', 'It will sho
 go
 
 -- end : DeepakS :11-March-2022 : core_parameters  insert script for show/hide billing information on patient-HistoryPage 
+
+
+--START: NageshBB: 13March2022: Inserted opd examinaiton permission and updated permissionid in routeconfig table
+if not exists(Select * from RBAC_Permission where  PermissionName = 'Clinical-notes-outpatExamination-view')
+Begin
+insert into RBAC_Permission (PermissionName,ApplicationId,CreatedBy,CreatedOn,IsActive)
+values('Clinical-notes-outpatExamination-view',(select top 1 ApplicationId from RBAC_Application where ApplicationCode='CLN'),1,GETDATE(),1)
+End
+Go
+
+Update RBAC_RouteConfig
+set PermissionId=(Select top 1 PermissionId from RBAC_Permission where  PermissionName = 'Clinical-notes-outpatExamination-view')
+where UrlFullPath='Doctors/PatientOverviewMain/NotesSummary/OPDExamination'
+Go
+--END: NageshBB: 13March2022: Inserted opd examinaiton permission and updated permissionid in routeconfig table
