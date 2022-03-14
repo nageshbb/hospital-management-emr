@@ -428,3 +428,11 @@ Values ( 'Patient','ShowBillDetailsOnHistoryPage','true','boolean', 'It will sho
 go
 
 -- end : DeepakS :11-March-2022 : core_parameters  insert script for show/hide billing information on patient-HistoryPage 
+
+-- start: Menka : 14-March-2022: Created discharge-admission-button permission for discharge button in ADT module
+
+Insert into RBAC_Permission(PermissionName,ApplicationId,CreatedBy,CreatedOn,IsActive)
+values ('discharge-admission-button',(select top 1 ApplicationId from RBAC_Application where ApplicationName='ADT'),1,'2022-03-14',1)
+GO
+
+-- end: Menka : 14-March-2022: Created discharge-admission-button permission for discharge button in ADT module
