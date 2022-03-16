@@ -443,3 +443,79 @@ set PermissionId=(Select top 1 PermissionId from RBAC_Permission where  Permissi
 where UrlFullPath='Doctors/PatientOverviewMain/NotesSummary/OPDExamination'
 Go
 --END: NageshBB: 13March2022: Inserted opd examinaiton permission and updated permissionid in routeconfig table
+
+--START: NageshBB: 14 march 2022: Hide 5 doctor module menu which don't have any feature and we are showing
+Update RBAC_RouteConfig 
+set IsActive=0
+where UrlFullPath in (
+'Doctors/PatientOverviewMain/PatientVisitHistory'
+,'Doctors/PatientOverviewMain/VisitSummary'
+,'Doctors/PatientOverviewMain/CurrentMedications'
+,'Doctors/PatientOverviewMain/RadiologyReports'
+,'Doctors/PatientOverviewMain/NotesSummary/OPDExamination'
+,'Doctors/PatientOverviewMain/ProblemsMain/PastMedical'
+,'Doctors/PatientOverviewMain/Clinical/Notes'
+,'Doctors/PatientOverviewMain/Clinical/DoctorsNotes')
+Go
+
+
+--END: NageshBB: 14 march 2022: Hide 5 doctor module menu which don't have any feature and we are showing
+
+--START: NageshBB: 14March2022: created table for patient visit notes save
+DROP TABLE if exists  [dbo].[CLN_PatientVisit_Notes]
+Go
+Create table [dbo].[CLN_PatientVisit_Notes]
+(
+         PatientVisitNoteId int identity(1,1)  constraint PK_CLN_PatientVisit_Notes primary key,
+         PatientId int not null ,
+         PatientVisitId int not null ,
+         ProviderId int not null,
+
+       
+        ChiefComplaint varchar(1000),
+        HistoryOfPresentingIllness varchar(1000),
+        ReviewOfSystems varchar(1000),
+        Diagnosis varchar(2000),
+
+        HEENT varchar(1000),
+        Chest varchar(1000),
+        CVS varchar(1000),
+        Abdomen varchar(1000),
+        Extremity varchar(1000),
+        Skin varchar(1000),
+        Neurological varchar(1000),
+
+        LinesProse varchar(500),
+        ProsDate Datetime ,
+        [Site] varchar(1000),
+        ProsRemarks varchar(1000),
+        [FreeText] varchar(2000),
+
+        FollowUp int ,
+        FollowUpUnit varchar(20),
+        Remarks varchar(400),
+
+        CreatedBy int,
+        CreatedOn Datetime ,
+        ModifiedBy int ,
+        ModifiedOn datetime,
+        IsActive bit,
+
+)
+Go
+
+--insert permission and route details for clinical patient visit note page 
+Insert into RBAC_Permission(PermissionName,ApplicationId,CreatedBy,CreatedOn,IsActive)
+values('clinical-patient-visit-note-view',(select top 1 applicationid from RBAC_Application where ApplicationCode='CLN'),1,GETDATE(),1)
+Go
+
+Insert into RBAC_RouteConfig(DisplayName,UrlFullPath,RouterLink,PermissionId,ParentRouteId,DefaultShow,DisplaySeq,IsActive)
+values('Visit Note','Doctors/PatientOverviewMain/Clinical/PatientVisitNote','PatientVisitNote',(select top 1 PermissionId from RBAC_Permission where PermissionName='clinical-patient-visit-note-view'),
+(select top 1 RouteId from RBAC_RouteConfig where UrlFullPath='Doctors/PatientOverviewMain/Clinical'),1,1,1)
+Go
+
+Alter table CLN_HomeMedications
+Add  PatientVisitId int
+Go
+--END: NageshBB: 14March2022: created table for patient visit notes save
+
