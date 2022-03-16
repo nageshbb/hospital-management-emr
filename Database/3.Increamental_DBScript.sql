@@ -430,6 +430,7 @@ go
 -- end : DeepakS :11-March-2022 : core_parameters  insert script for show/hide billing information on patient-HistoryPage 
 
 
+
 --START: NageshBB: 13March2022: Inserted opd examinaiton permission and updated permissionid in routeconfig table
 if not exists(Select * from RBAC_Permission where  PermissionName = 'Clinical-notes-outpatExamination-view')
 Begin
@@ -519,3 +520,11 @@ Add  PatientVisitId int
 Go
 --END: NageshBB: 14March2022: created table for patient visit notes save
 
+
+-- start: Menka : 14-March-2022: Created discharge-admission-button permission for discharge button in ADT module
+
+Insert into RBAC_Permission(PermissionName,ApplicationId,CreatedBy,CreatedOn,IsActive)
+values ('discharge-admission-button',(select top 1 ApplicationId from RBAC_Application where ApplicationName='ADT'),1,'2022-03-14',1)
+GO
+
+-- end: Menka : 14-March-2022: Created discharge-admission-button permission for discharge button in ADT module
