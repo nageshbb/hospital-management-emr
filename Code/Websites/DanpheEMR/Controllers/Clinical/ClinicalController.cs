@@ -211,6 +211,9 @@ namespace DanpheEMR.Controllers.Clinical
                                         join pat in dbContext.Patients on visitNote.PatientId equals pat.PatientId
                                         join emp in dbContext.Employee on visitNote.CreatedBy equals emp.EmployeeId
                                         join primaryDoc in dbContext.Employee on visitNote.ProviderId equals primaryDoc.EmployeeId
+                                        join visit in dbContext.Visit on visitNote.PatientVisitId equals visit.PatientVisitId 
+                                        join dept in dbContext.Departments on visit.DepartmentId equals dept.DepartmentId into depts
+                                        from dept in depts.DefaultIfEmpty()
                                         where visitNote.PatientId== patientId && visitNote.PatientVisitId == patientVisitId
                                         select new
                                         {
@@ -220,7 +223,8 @@ namespace DanpheEMR.Controllers.Clinical
                                             Age=pat.Age,
                                             Sex=pat.Gender,
                                             WrittenBy=emp.FullName,
-                                            PatientCode=pat.PatientCode
+                                            PatientCode=pat.PatientCode,
+                                            DepartmentName=dept.DepartmentName
                                         }).FirstOrDefault();
                     if (patVisitNote != null)
                     {
