@@ -121,7 +121,7 @@ export class PatientVisitNoteComponent {
         return html;
       }
       public AssignSelectedICD() {
-         
+         if(this.icd10Selected.ICD10Code != null){
         if (typeof (this.icd10Selected) == 'object' && this.icd10Selected.ICD10Description.length > 0) {
           this.changeDetector.detectChanges();
           this.patientVisitNote.ICDList.push(this.icd10Selected);
@@ -129,6 +129,7 @@ export class PatientVisitNoteComponent {
             // this.icd10Selected=new ICD10();
             // this.icd10Selected.ICD10Description='';
         }
+      }
     }
     UpdatePatientVisitNote(){
         this.UpdateNoteDetails();

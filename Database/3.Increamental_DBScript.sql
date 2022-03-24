@@ -809,3 +809,13 @@ FROM PAT_PatientVisits AS vis
 END
 GO
 -- end: Menka : 22-March-2022: Altered stored procedure of Admission,DailyAppointment and DailyAppointmentByDepartment to get diagnosis data
+
+-- start: Menka : 24-March-2022: Created core parameter in CORE_CFG_Parameters table to show/hide Ayurved vitals and altered nadi column's data type in CLN_PatientVitals table
+Insert Into CORE_CFG_Parameters (ParameterGroupName,ParameterName,ParameterValue,ValueDataType,Description,ParameterType)
+Values ( 'Clinical','ShowAyurvedVitals','true','boolean', 'This will show or hide ayurved vitals on Vitals page','custom')
+Go
+
+alter table CLN_PatientVitals
+alter column Nadi varchar(20) null
+Go
+-- end: Menka : 24-March-2022: Created core parameter in CORE_CFG_Parameters table to show/hide Ayurved vitals and altered nadi column's data type in CLN_PatientVitals table
