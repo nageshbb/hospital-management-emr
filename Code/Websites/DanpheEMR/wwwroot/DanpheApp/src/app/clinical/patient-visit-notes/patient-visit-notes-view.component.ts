@@ -38,6 +38,7 @@ export class PatientVisitNoteViewComponent {
   public patientVisitNote = new PatientVisitNoteVM();
   public patVisitCode: string = null;
   public departmentName:string=null;
+  public showAyurvedVitals:boolean=false;
   constructor(
     public msgBoxServ: MessageboxService,
     public coreService: CoreService,
@@ -53,6 +54,7 @@ export class PatientVisitNoteViewComponent {
     this.GetHeaderParameter();
     this.showView = false;
     this.GetPatientVisitNoteAllData();
+    this.showAyurvedVitals = this.coreService.ShowAyurvedVitals();
   }
   GetPatientVisitNoteAllData() {
     this.IOAllergeBLService.GetPatientVisitNoteAllData(
@@ -65,6 +67,12 @@ export class PatientVisitNoteViewComponent {
        
         if(this.patientVisitNote.patVisitNote.PatientVisitNote.Diagnosis.trim().length > 0){
           this.patientVisitNote.diagnosisList= JSON.parse(this.patientVisitNote.patVisitNote.PatientVisitNote.Diagnosis);
+        }
+
+        for(var i=0; i < this.patientVisitNote.vitalsList.length; i++){
+          if(this.patientVisitNote.vitalsList[i].BodyPart.trim().length > 0){
+            this.patientVisitNote.bodyPainList= JSON.parse(this.patientVisitNote.vitalsList[i].BodyPart);
+          }
         }
         
         console.log(res.Results);

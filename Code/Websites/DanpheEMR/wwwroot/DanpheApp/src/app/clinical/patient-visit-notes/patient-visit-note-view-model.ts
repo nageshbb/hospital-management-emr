@@ -6,4 +6,5 @@ export class PatientVisitNoteVM{
     public otherOrderList:Array<any>;
     public homeMedicationList:Array<any>;
     public diagnosisList:Array<any>;
+    public bodyPainList:Array<any>;
   }

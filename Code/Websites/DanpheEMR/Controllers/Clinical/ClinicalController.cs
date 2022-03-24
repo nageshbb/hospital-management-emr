@@ -229,8 +229,10 @@ namespace DanpheEMR.Controllers.Clinical
                     if (patVisitNote != null)
                     {
                         //vitals
-                        List<VitalsModel> vitalsList = dbContext.Vitals
-                                                   .Where(p => p.PatientVisitId == patientVisitId).ToList();
+                        var vitals = dbContext.Vitals
+                                                   .Where(p => p.PatientVisitId == patientVisitId).OrderByDescending(d => d.VitalsTakenOn).FirstOrDefault();
+                        List<VitalsModel> vitalsList = new List<VitalsModel>();
+                        vitalsList.Add(vitals);
                         //lab requisitions
                         List<LabRequisitionModel> labRequisitionList = dbContext.LabRequisitions.Where(a => a.PatientVisitId == patientVisitId && a.BillingStatus != "returned" && a.BillingStatus != "cancel").ToList();
                         //imaging requisition
